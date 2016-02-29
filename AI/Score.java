@@ -26,7 +26,7 @@ public class Score implements Comparable<Score>{
 	}
 	
 	public void setDepth(int depth){
-		this.depth = depth
+		this.depth = depth;
 	}
 	
 	public void incrementDepth(){
@@ -49,7 +49,7 @@ public class Score implements Comparable<Score>{
 				return 0;
 			} else if (value == -1.0){
 				if(depth > score.depth){
-					return 1
+					return 1;
 				} else if(depth < score.depth){
 					return -1;
 				}

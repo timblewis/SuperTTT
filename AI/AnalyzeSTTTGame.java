@@ -10,7 +10,7 @@ public class AnalyzeSTTTGame extends SuperTTTGame{
 	
 	public Score AnalyzeDepth(int depth, Score maxScore){
 		if(depth < 1 || board.getController() != 0){
-			return board.getPercentControlled();
+			return new Score(board.getPercentControlled(),0);
 		} else{
 			int player = -2*(turn%2) + 1;
 			ArrayList<int[]> legalMoves = this.getLegalMoves();
