@@ -8,28 +8,29 @@ import superTTT.Game.SuperTTTGame;
 
 public class AnalyzeSTTTGame extends SuperTTTGame{
 	
-	public double AnalyzeDepth(int depth, double maxScore){
+	public Score AnalyzeDepth(int depth, Score maxScore){
 		if(depth < 1 || board.getController() != 0){
 			return board.getPercentControlled();
 		} else{
 			int player = -2*(turn%2) + 1;
 			ArrayList<int[]> legalMoves = this.getLegalMoves();
 			if(!legalMoves.isEmpty()){
-				double bestScore = (player == -1)? Double.MAX_VALUE : Double.MIN_VALUE;
-				for(int i = 0; i < legalMoves.size() && bestScore*player != 1; i++){
+				Score bestScore = (player == -1)? new Score(1,0) : new Score(-1,0);
+				for(int i = 0; i < legalMoves.size(); i++){
 					move(legalMoves.get(i));
-					double newScore = AnalyzeDepth(depth - 1, bestScore);
-					if(bestScore*player < newScore*player){
+					Score newScore = AnalyzeDepth(depth - 1, bestScore);
+					newScore.incrementDepth();
+					if(newScore.compareTo(bestScore)*player > 0){
 						bestScore = newScore;
 					}
 					previousMove();
-					if(maxScore*player <= bestScore*player){
+					if(maxScore.compareTo(bestScore)*player >= 0){
 						return bestScore;
 					}
 				}
 				return bestScore;
 			} else{
-				return 0;
+				return new Score(0,0);
 			}
 		}
 	}
@@ -38,17 +39,16 @@ public class AnalyzeSTTTGame extends SuperTTTGame{
 		int player = -2*(turn%2) + 1;
 		ArrayList<int[]> legalMoves = this.getLegalMoves();
 		int[] bestMove = new int[4];
-		double bestScore = (player == -1)? Double.MAX_VALUE : Double.MIN_VALUE;
+		Score bestScore = (player == -1)? new Score(1,0) : new Score(-1,0);
 		for(int i = 0; i < legalMoves.size(); i++){
 			move(legalMoves.get(i));
-			double newScore = AnalyzeDepth(depth - 1, bestScore);
-			if(bestScore*player < newScore*player){
+			Score newScore = AnalyzeDepth(depth - 1, bestScore);
+			if(newScore.compareTo(bestScore)*player > 0){
 				bestMove = legalMoves.get(i);
 				bestScore = newScore;
 			}
 			previousMove();
 		}
-		System.out.println(bestScore);
 		return bestMove;
 	}
 }
