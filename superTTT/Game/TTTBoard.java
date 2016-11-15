@@ -72,14 +72,19 @@ public class TTTBoard<E extends InnerSquare> implements InnerSquare{
 		return 0;
 	}
 	
+	//TODO move board eval function to AI
 	@Override
 	public double getPercentControlled() { //TODO change so that different number of squares owned give different values
 		if(winner == 0){
 			double total = 0;
 			for(int i = 0; i < SQ_NUM; i++){
-				total += getDiagonalPercent(0, i, 1, 0) + getDiagonalPercent(i, 0, 0, 1);
+				double dp1 = getDiagonalPercent(0, i, 1, 0);
+				double dp2 = getDiagonalPercent(i, 0, 0, 1);
+				total += dp1*Math.abs(dp1) + dp2*Math.abs(dp2);
 			}
-			total += getDiagonalPercent(0, 0, 1, 1) + getDiagonalPercent(0, SQ_NUM - 1, 1, -1);
+			double dp1 = getDiagonalPercent(0, 0, 1, 1);
+			double dp2 = getDiagonalPercent(0, SQ_NUM - 1, 1, -1);
+			total += dp1*Math.abs(dp1) + dp2*Math.abs(dp2);
 			return total/8;
 		} else{
 			return winner;

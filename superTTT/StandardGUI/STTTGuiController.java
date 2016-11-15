@@ -1,9 +1,12 @@
 package superTTT.StandardGUI;
 
+import java.io.IOException;
+
 import javax.swing.JFrame;
 
 import superTTT.AI.AIPlayer;
 import superTTT.AI.AnalyzeSTTTGame;
+import superTTT.AI.OpeningBookAIPlayer;
 import superTTT.Game.Player;
 import superTTT.Game.SuperTTTGame;
 
@@ -45,7 +48,12 @@ public class STTTGuiController{
 	
 	public static void main(String[] args){
 		STTTGuiController control = new STTTGuiController();
-		control.setPlayer(1, new AIPlayer());
+		try{
+			control.setPlayer(1, new AIPlayer());
+			control.setPlayer(0, new OpeningBookAIPlayer("openingbook_1_0.txt"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		control.startNewGame();
 	}
 }

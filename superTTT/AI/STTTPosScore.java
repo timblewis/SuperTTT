@@ -1,11 +1,11 @@
 package superTTT.AI;
 
 
-public class Score implements Comparable<Score>{
+public class STTTPosScore implements Comparable<STTTPosScore>{
 	protected double value;
 	protected int depth;
 	
-	public Score(double value, int depth){
+	public STTTPosScore(double value, int depth){
 		if(value < -1 || value > 1 || depth < 0){
 			throw new IllegalArgumentException();
 		}
@@ -34,7 +34,7 @@ public class Score implements Comparable<Score>{
 	}
 
 	@Override
-	public int compareTo(Score score) {
+	public int compareTo(STTTPosScore score) {
 		if(value > score.value){
 			return 1;
 		} else if (value < score.value){

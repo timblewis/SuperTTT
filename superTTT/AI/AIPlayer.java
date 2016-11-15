@@ -4,12 +4,14 @@ import superTTT.StandardGUI.StandardInputSTTTController;
 
 
 public class AIPlayer implements Player {
-	private AnalyzeSTTTGame game;
-	private int depth;
+	protected AnalyzeSTTTGame game;
+	protected int depth;
+	
+	public static final int DEFAULT_DEPTH = 8;
 	
 	public AIPlayer(){
 		game = new AnalyzeSTTTGame();
-		depth = 8;
+		depth = DEFAULT_DEPTH;
 	}
 	
 	public AIPlayer(int depth){
@@ -22,8 +24,8 @@ public class AIPlayer implements Player {
 		if(previousMove != null){
 			game.move(previousMove);
 		}
-		int realDepth = (int)(depth*Math.log(9)/Math.log(9-game.getTurn()/9.0)); //TODO fix if number of turns gets low enough
-		System.out.println(realDepth + " " + Math.log(9-game.getTurn()/9.0));
+		int realDepth = (int)(depth*Math.log(9)/Math.log(Math.max(9-game.getTurn()/9.0,2.0))); //TODO fix if number of turns gets low enough
+		System.out.print(game.getTurn() + " " + realDepth + " ");
 		int[] move = game.FindBestMove(realDepth);
 		game.move(move);
 		return move;

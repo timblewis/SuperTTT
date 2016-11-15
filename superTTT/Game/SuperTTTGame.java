@@ -18,7 +18,7 @@ public class SuperTTTGame{
 	}
 	
 	public boolean isLegalMove(int[] move){
-		return (move != null) && ((turn == 0) || (move[0] == moveList.get(turn - 1)[2] && move[1] == moveList.get(turn - 1)[3])
+		return (move != null) && board.winner == 0 && ((turn == 0) || (move[0] == moveList.get(turn - 1)[2] && move[1] == moveList.get(turn - 1)[3])
 				|| !board.getSquare(moveList.get(turn - 1)[2], moveList.get(turn - 1)[3]).hasOpen()) &&
 				(board.getSquare(move[0], move[1]).getSquare(move[2], move[3]).getController() == 0);
 	}
@@ -44,23 +44,25 @@ public class SuperTTTGame{
 	
 	public ArrayList<int[]> getLegalMoves(){
 		ArrayList<int[]> legalMoves = new ArrayList<int[]>();
-		if(turn == 0 || !board
-				.getSquare(moveList.get(turn - 1)[2], moveList.get(turn - 1)[3])
-				.hasOpen()){
-			for(int i = 0; i < 3; i++){
-				for(int j = 0; j < 3; j++){
-					ArrayList<int[]> movesInSquare = board.getSquare(i, j).getOpenSquares();
-					for(int[] innerMove: movesInSquare){
-						int[] move = {i, j, innerMove[0], innerMove[1]};
-						legalMoves.add(move);
+		if(board.winner == 0){
+			if(turn == 0 || !board
+					.getSquare(moveList.get(turn - 1)[2], moveList.get(turn - 1)[3])
+					.hasOpen()){
+				for(int i = 0; i < 3; i++){
+					for(int j = 0; j < 3; j++){
+						ArrayList<int[]> movesInSquare = board.getSquare(i, j).getOpenSquares();
+						for(int[] innerMove: movesInSquare){
+							int[] move = {i, j, innerMove[0], innerMove[1]};
+							legalMoves.add(move);
+						}
 					}
 				}
-			}
-		} else{
-			ArrayList<int[]> movesInSquare = board.getSquare(moveList.get(turn - 1)[2], moveList.get(turn - 1)[3]).getOpenSquares();
-			for(int[] innerMove: movesInSquare){
-				int[] move = {moveList.get(turn-1)[2], moveList.get(turn-1)[3], innerMove[0], innerMove[1]};
-				legalMoves.add(move);
+			} else{
+				ArrayList<int[]> movesInSquare = board.getSquare(moveList.get(turn - 1)[2], moveList.get(turn - 1)[3]).getOpenSquares();
+				for(int[] innerMove: movesInSquare){
+					int[] move = {moveList.get(turn-1)[2], moveList.get(turn-1)[3], innerMove[0], innerMove[1]};
+					legalMoves.add(move);
+				}
 			}
 		}
 		return legalMoves;
@@ -117,5 +119,17 @@ public class SuperTTTGame{
 				System.out.println();
 			}
 		}
+	}
+	
+	public void move(int move){
+		move(convertMove(move));
+	}
+	
+	public static int convertMove(int[] move){
+		return move[0]*27 + move[1]*9 + move[2]*3 + move[3];
+	}
+	
+	public static int[] convertMove(int move){
+		return new int[] {move/27, (move/9)%3, (move/3)%3, move%3};
 	}
 }
