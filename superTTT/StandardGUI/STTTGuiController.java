@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import superTTT.AI.AIPlayer;
 import superTTT.AI.AnalyzeSTTTGame;
 import superTTT.AI.OpeningBookAIPlayer;
+import superTTT.AI.P1PerfectAIPlayer;
 import superTTT.Game.Player;
 import superTTT.Game.SuperTTTGame;
 
@@ -49,8 +50,9 @@ public class STTTGuiController{
 	public static void main(String[] args){
 		STTTGuiController control = new STTTGuiController();
 		try{
-			control.setPlayer(1, new AIPlayer());
-			control.setPlayer(0, new OpeningBookAIPlayer("openingbook_1_0.txt"));
+			control.setPlayer(0, new P1PerfectAIPlayer());
+			//control.setPlayer(1, new AIPlayer());
+			control.setPlayer(1, new OpeningBookAIPlayer("openingbook_1_0.txt"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
